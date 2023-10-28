@@ -1,0 +1,51 @@
+######################### PYTHON PROJECT ENVIRONMENT SETUP ############################
+
+python version:  python --version
+steps to create virtual environment:
+    1.pip install virtualenv
+    2.python3 -m virtualenv venv or python3 -m  venv dashboard
+    3.cd venv\Scripts\activate.bat or cd venv\Scripts\activate.ps1 or source env/bin/activate
+    4.deactivate
+
+Check list of python packages:  pip list  and pip freeze > requirements.txt
+Install packages using requirements file : pip install -r requirements.txt
+
+
+################################  DJANGO PROJECT SETUP ######################################
+
+Django version :  django-admin --version
+Start project :   django-admin startproject Projectname
+
+run Django project : python path/manage.py runserver
+
+
+
+##################################  GIT HUB CONFIGURATION #####################################
+SCM Tools: Github or Gitlab or Bitbucket or SVN or TFS or CodeCommit or Amazon S3 or Azure Repos
+
+Github:
+url - https://github.com/gmreddy0492/dashboard  
+clone -     https://github.com/gmreddy0492/dashboard.git  -- https
+            git@github.com:gmreddy0492/dashboard.git  -- ssh
+PAT-Token : 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
+
+Commands: 
+            git init
+            git add remote origin giturl
+            git pull
+            git checkout -b branchname
+            git branch --set-upstream-to origin/main
+            git branch branchname
+            git log
+            git cherry-pick commitid
+            git config --global user.name "My Name"
+            git config --global user.email "myemail@example.com"  
+            git status 
+            git push
+            git clone repo_url
+
+
+
+
+
+
