@@ -24,38 +24,44 @@ pip install -r requirements.txt gunicorn
 
 # Create a Gunicorn service
 
-cat << EOF | sudo tee /etc/systemd/system/dashboard_gunicorn.service
-[program:gunicorn]
-directory=/home/ubuntu/dashboard
-command=/home/ubuntu/dashboard/venv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/dashboard/application/dashboard.sock core.wsgi:application  
+cat << EOF | sudo tee /etc/supervisor/conf.d/gunicorn.conf
+directory=/home/ubuntu/dashboard/application
+command=/home/ubuntu/dashboard/venv/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/dashboard/application/core/dashboard.sock core.wsgi:application
 autostart=true
 autorestart=true
 stderr_logfile=/var/log/gunicorn/gunicorn.err.log
 stdout_logfile=/var/log/gunicorn/gunicorn.out.log
+
 
 [group:guni]
 programs:gunicorn
 EOF
 
 
-mkdir /var/log/gunicorn
-touch gunicorn.err.log  gunicorn.out.log
+sudo mkdir /var/log/gunicorn
 
+sudo touch /var/log/gunicorn/gunicorn.err.log  /var/log/gunicorn/gunicorn.out.log
+
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl status
 # Configure Nginx
 
+#sudo /etc/nginx/
+#sudo nano /etc/nginx/nginx.conf  change user to root from www-data
 sudo rm /etc/nginx/sites-available/default
 sudo rm /etc/nginx/sites-enabled/default
-cat << EOF | sudo tee /etc/nginx/sites-available/dashboard
+cat << EOF | sudo tee /etc/nginx/sites-available/django.conf
 server{
 
 	listen 80;
-	server_name 44.218.128.63;
+	server_name 34.192.196.180;
 
 	
 	location / {
 
 		include proxy_params;
-		proxy_pass http://unix:/home/ubuntu/dashboard/dashboard.sock;
+		proxy_pass http://unix:/home/ubuntu/dashboard/application/core/dashboard.sock;
 
 	}
 }

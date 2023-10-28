@@ -8,7 +8,7 @@ terraform{
 
 inputs = {
   ami             = "ami-0261755bbcb8c4a84"
-  instance_type   = "t2.micro"
+  instance_type   = "t2.medium"
   environment     = "Dev"
   publicsubnet    = dependency.vpc.outputs.public_subnet_ids
   vpc_security_group_ids = dependency.vpc.outputs.security_group_ids
