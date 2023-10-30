@@ -7,11 +7,19 @@ pr:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  # Define your variables here
+  azureDevOpsServiceConnection: 'your-service-connection-name'
+  sshServer: 'your-ubuntu-server-ip'
+  sshPort: 22
+  sshUsername: 'your-ssh-username'
+  artifactName: 'django'
+
 stages:
-- stage: Build
+- stage: pylint
   jobs:
-  - job: Build
-    displayName: 'Build Stage'
+  - job: pylint
+    displayName: 'pylint Stage'
     steps:
     - task: UsePythonVersion@0
       inputs:
@@ -22,13 +30,62 @@ stages:
         python -m venv venv
         source venv/bin/activate
         pip install -r requirements.txt
-        #pylint your_django_project/ --fail-under=70
-        pwd
-        ls
         cd application
         pylint --load-plugins pylint_django --django-settings-module=core.settings **/*.py
       displayName: 'Setup Virtual Environment and Run pylint'
       continueOnError: true # Continue with the next steps even if pylint fails
+- stage: BuildandPackage
+  dependsOn:  pylint
+  jobs:
+  - job: Buildandpackage
+    displayName: 'Build and package Stage'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+        addToPath: true
+
+    - script: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
+        cd application
+      displayName: 'Setup Virtual Environment and Run pylint'
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
+        replaceExistingArchive: true
+        verbose: # (no value); this input is optional
+    - publish: $(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip
+      displayName: 'Upload package'
+      artifact: drop
+    - publish: $(Build.ArtifactStagingDirectory)
+      artifact: $(artifactName)
+      displayName: 'Publish Artifacts'
+
+- stage: Deploy
+  jobs:
+  - job: DeployJob
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        artifactName: $(artifactName)
+        downloadPath: '$(Pipeline.Workspace)'
+    
+    - task: CopyFilesOverSSH@0
+      inputs:
+        sshEndpoint: 'svc_Azdevops_ssh'
+        sourceFolder: '$(Pipeline.Workspace)/s'
+        contents: '**'
+        targetFolder: '/home/ubuntu/dashboard'
+        readyTimeout: '20000'
+
 
     
-
