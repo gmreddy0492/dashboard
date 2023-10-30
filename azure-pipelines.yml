@@ -78,9 +78,9 @@ stages:
         artifactName: $(artifactName)
         downloadPath: '$(Pipeline.Workspace)'
         
-    - script: |
-        ls $(Pipeline.Workspace)/a
-        ls $(Pipeline.Workspace)/b
+    #- script: |
+    #    ls $(Pipeline.Workspace)/a
+    #    ls $(Pipeline.Workspace)/b
     - task: CopyFilesOverSSH@0
       inputs:
         sshEndpoint: 'svc_Azdevops_ssh'
@@ -97,8 +97,10 @@ stages:
         runOptions: 'commands'
         commands: |
           sudo supervisorctl restart all
+          rm -rf /home/ubuntu/dashboard/s
+          rm -rf /home/ubuntu/dashboard/infrastructure
         readyTimeout: '20000'
-      displayName: 'restart gunicorn'
+      displayName: 'restart gunicorn service'
 
 
     
