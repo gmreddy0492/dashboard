@@ -93,7 +93,7 @@ stages:
         runOptions: 'commands'
         commands: |
           sudo supervisorctl restart all
-          rm -rf $(Pipeline.Workspace)/s
+          rm -rf /home/ubuntu/dashboard/s
         readyTimeout: '20000'
       displayName: 'restart gunicorn'
 
