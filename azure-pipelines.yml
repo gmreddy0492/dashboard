@@ -25,7 +25,7 @@ stages:
         #pylint your_django_project/ --fail-under=70
         pwd
         ls
-        cd /application
+        cd application
         pylint --load-plugins pylint_django --django-settings-module=core.settings **/*.py
       displayName: 'Setup Virtual Environment and Run pylint'
       continueOnError: true # Continue with the next steps even if pylint fails
