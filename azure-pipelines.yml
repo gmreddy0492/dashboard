@@ -1,8 +1,8 @@
-trigger:
-- '*'
+trigger:none
+#- '*'
 
-pr:
-- '*'
+#pr:
+#- '*'
 
 pool:
   vmImage: 'ubuntu-latest'
