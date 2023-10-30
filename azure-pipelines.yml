@@ -1,5 +1,5 @@
 trigger:
-- 'main'
+- 'master'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -94,6 +94,7 @@ stages:
         commands: |
           sudo supervisorctl restart all
           rm -rf /home/ubuntu/dashboard/s
+          rm -rf /home/ubuntu/dashboard/infrastructure
         readyTimeout: '20000'
       displayName: 'restart gunicorn'
 
