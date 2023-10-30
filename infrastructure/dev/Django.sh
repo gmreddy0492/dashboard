@@ -48,6 +48,28 @@ sudo supervisorctl status
 # Configure Nginx
 
 #sudo /etc/nginx/
+#!/bin/bash
+
+# Define the new user you want to set
+new_user="root"
+
+# Check if the nginx.conf file exists
+nginx_conf="/etc/nginx/nginx.conf"
+if [ -f "$nginx_conf" ]; then
+    # Backup the original nginx.conf file
+    sudo cp "$nginx_conf" "$nginx_conf.bak"
+
+    # Replace "user www-data;" with "user root;"
+    sudo sed -i "s/user www-data;/user $new_user;/" "$nginx_conf"
+
+    # Reload Nginx to apply the changes
+    sudo systemctl reload nginx
+
+    echo "Nginx user changed to $new_user"
+else
+    echo "Nginx configuration file not found: $nginx_conf"
+fi
+
 #sudo nano /etc/nginx/nginx.conf  change user to root from www-data
 sudo rm /etc/nginx/sites-available/default
 sudo rm /etc/nginx/sites-enabled/default
@@ -75,3 +97,6 @@ sudo systemctl restart nginx
 # sudo ufw enable
 
 echo "Django application hosted with Nginx is now live."
+
+
+#pylint --load-plugins pylint_django --django-settings-module=example.settings **/*.py
