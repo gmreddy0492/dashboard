@@ -62,9 +62,10 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip
       displayName: 'Upload package'
       artifact: drop
-    - publish: $(Build.ArtifactStagingDirectory)
-      artifact: $(artifactName)
-      displayName: 'Publish Artifacts'
+      
+    #- publish: $(Build.ArtifactStagingDirectory)
+    #  artifact: $(artifactName)
+    #  displayName: 'Publish Artifacts'
 
 - stage: Deploy
   jobs:
@@ -85,6 +86,13 @@ stages:
         sourceFolder: '$(Pipeline.Workspace)/s'
         contents: '**'
         targetFolder: '/home/ubuntu/dashboard'
+        readyTimeout: '20000'
+    
+    - task: SSH@0
+      inputs:
+        sshEndpoint: 'svc_Azdevops_ssh'
+        runOptions: 'commands'
+        commands: 'sudo supervisorctl restart all'
         readyTimeout: '20000'
 
 
