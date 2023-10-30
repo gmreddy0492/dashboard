@@ -84,7 +84,7 @@ stages:
     - task: CopyFilesOverSSH@0
       inputs:
         sshEndpoint: 'svc_Azdevops_ssh'
-        sourceFolder: '$(Pipeline.Workspace)/a'
+        sourceFolder: '$(Pipeline.Workspace)/s/application'
         contents: '**'
         targetFolder: '/home/ubuntu/dashboard/application'
         readyTimeout: '20000'
