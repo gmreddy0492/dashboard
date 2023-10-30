@@ -53,12 +53,12 @@ stages:
       displayName: 'Setup Virtual Environment and Run pylint'
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        rootFolderOrFile: '$(Build.SourcesDirectory)/application'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
         replaceExistingArchive: true
-        verbose: # (no value); this input is optional
+        verbose: true
     #- publish: $(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip
     #  displayName: 'Upload package'
     #  artifact: drop
