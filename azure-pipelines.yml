@@ -82,7 +82,7 @@ stages:
     - task: CopyFilesOverSSH@0
       inputs:
         sshEndpoint: 'svc_Azdevops_ssh'
-        sourceFolder: '$(Pipeline.Workspace)/$(artifactName)'
+        sourceFolder: '$(Pipeline.Workspace)'
         contents: '**'
         targetFolder: '/home/ubuntu'
         readyTimeout: '20000'
