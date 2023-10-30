@@ -80,17 +80,20 @@ stages:
     - task: CopyFilesOverSSH@0
       inputs:
         sshEndpoint: 'svc_Azdevops_ssh'
-        sourceFolder: '$(Pipeline.Workspace)/s'
+        sourceFolder: '$(Pipeline.Workspace)'
         contents: '**'
         targetFolder: '/home/ubuntu/dashboard'
         readyTimeout: '20000'
       displayName: 'copy files to linux over ssh'
-    
+      
+      
     - task: SSH@0
       inputs:
         sshEndpoint: 'svc_Azdevops_ssh'
         runOptions: 'commands'
-        commands: 'sudo supervisorctl restart all'
+        commands: |
+          sudo supervisorctl restart all
+          rm -rf $(Pipeline.Workspace)/s
         readyTimeout: '20000'
       displayName: 'restart gunicorn'
 
