@@ -87,6 +87,7 @@ stages:
         contents: '**'
         targetFolder: '/home/ubuntu/dashboard'
         readyTimeout: '20000'
+      displayName: 'copy files to linux over ssh'
     
     - task: SSH@0
       inputs:
@@ -94,6 +95,7 @@ stages:
         runOptions: 'commands'
         commands: 'sudo supervisorctl restart all'
         readyTimeout: '20000'
+      displayName: 'restart gunicorn'
 
 
     
