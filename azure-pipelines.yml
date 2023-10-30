@@ -59,13 +59,13 @@ stages:
         archiveFile: '$(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip'
         replaceExistingArchive: true
         verbose: # (no value); this input is optional
-    - publish: $(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip
-      displayName: 'Upload package'
-      artifact: drop
+    #- publish: $(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip
+    #  displayName: 'Upload package'
+    #  artifact: drop
       
-    #- publish: $(Build.ArtifactStagingDirectory)
-    #  artifact: $(artifactName)
-    #  displayName: 'Publish Artifacts'
+    - publish: $(Build.ArtifactStagingDirectory)
+      artifact: $(artifactName)
+      displayName: 'Publish Artifacts'
 
 - stage: Deploy
   jobs:
