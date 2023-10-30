@@ -63,6 +63,7 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)
       artifact: $(artifactName)
       displayName: 'Publish Artifacts'
+      
 
 - stage: Deploy
   jobs:
@@ -76,13 +77,16 @@ stages:
         buildType: 'current'
         artifactName: $(artifactName)
         downloadPath: '$(Pipeline.Workspace)'
-    
+        
+    - script: |
+        ls $(Pipeline.Workspace)
+        ls $(Pipeline.Workspace)/s
     - task: CopyFilesOverSSH@0
       inputs:
         sshEndpoint: 'svc_Azdevops_ssh'
-        sourceFolder: '$(Pipeline.Workspace)'
+        sourceFolder: '$(Pipeline.Workspace)/s/application'
         contents: '**'
-        targetFolder: '/home/ubuntu/dashboard'
+        targetFolder: '/home/ubuntu/dashboard/application'
         readyTimeout: '20000'
       displayName: 'copy files to linux over ssh'
       
