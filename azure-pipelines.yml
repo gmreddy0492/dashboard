@@ -7,6 +7,14 @@ pr:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  # Define your variables here
+  azureDevOpsServiceConnection: 'your-service-connection-name'
+  sshServer: 'your-ubuntu-server-ip'
+  sshPort: 22
+  sshUsername: 'your-ssh-username'
+  artifactName: 'django'
+
 stages:
 - stage: pylint
   jobs:
@@ -54,7 +62,30 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)/Application$(Build.BuildId).zip
       displayName: 'Upload package'
       artifact: drop
+    - publish: $(Build.ArtifactStagingDirectory)
+      artifact: $(artifactName)
+      displayName: 'Publish Artifacts'
+
+- stage: Deploy
+  jobs:
+  - job: DeployJob
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        artifactName: $(artifactName)
+        downloadPath: '$(Pipeline.Workspace)'
+    
+    - task: CopyFilesOverSSH@0
+      inputs:
+        sshEndpoint: 'svc_Azdevops_ssh'
+        sourceFolder: '$(Pipeline.Workspace)/$(artifactName)'
+        contents: '**'
+        targetFolder: '/home/ubuntu'
+        readyTimeout: '20000'
 
 
     
-
