@@ -46,6 +46,11 @@ Commands:
 
 
 
+################ PYTHON SCAN PYLINT TOOL  #####################
+pylint --load-plugins pylint_django --django-settings-module=core.settings **/*.py
+
+
+
 
 
 

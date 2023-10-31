@@ -1,0 +1,10 @@
+npm run build
+npm run watch
+npm run dev
+
+npm install
+npm init
+
+npm install --save-dev css-loader style-loader sass-loader sass webpack
+
+yarn add -D @babel/core @babel/preset-env @babel/preset-react babel-loader webpack webpack-cli
