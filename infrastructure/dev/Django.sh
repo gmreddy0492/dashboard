@@ -86,9 +86,11 @@ server{
 	}
     location /static {
         autoindex on;
-		alias /home/ubuntu/dashboard/application/frontend/static;
+		alias /home/ubuntu/dashboard/application/frontend/static/;
 	}
-    
+    location ~ \.js {
+       add_header  Content-Type    application/x-javascript;
+    }
 }
 EOF
 
