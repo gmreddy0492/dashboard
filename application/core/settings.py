@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-x_^q9spkcet$#u@4*z0kjjpn-(^!ku!gq(-!=7h&#h4!hkl5$g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -119,8 +119,14 @@ USE_TZ = True
 
 STATIC_URL = 'frontend/static/'
 
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/static')]
+if DEBUG:
+    STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/static')
+                        ]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'frontend/static')
+
+
 #application\frontend\static
 
 

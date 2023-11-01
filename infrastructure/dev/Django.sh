@@ -6,7 +6,7 @@ sudo apt-get update && sudo apt-get upgrade  -y
 
 # Install necessary packages  - python3-pip python3-venv nginx supervisor
 
-sudo apt-get install -y python3-pip python3-venv nginx supervisor
+sudo apt-get install -y python3-pip python3-venv nginx supervisor nodejs npm
 # clone Source code
 
 git clone https://github.com/gmreddy0492/dashboard.git
@@ -55,19 +55,19 @@ new_user="root"
 
 # Check if the nginx.conf file exists
 nginx_conf="/etc/nginx/nginx.conf"
-if [ -f "$nginx_conf" ]; then
+if [ -f "nginx_conf" ]; then
     # Backup the original nginx.conf file
-    sudo cp "$nginx_conf" "$nginx_conf.bak"
+    sudo cp "nginx_conf" "nginx_conf.bak"
 
     # Replace "user www-data;" with "user root;"
-    sudo sed -i "s/user www-data;/user $new_user;/" "$nginx_conf"
+    sudo sed -i "s/user www-data;/user new_user;/" "nginx_conf"
 
     # Reload Nginx to apply the changes
     sudo systemctl reload nginx
 
-    echo "Nginx user changed to $new_user"
+    echo "Nginx user changed to new_user"
 else
-    echo "Nginx configuration file not found: $nginx_conf"
+    echo "Nginx configuration file not found: nginx_conf"
 fi
 
 #sudo nano /etc/nginx/nginx.conf  change user to root from www-data
@@ -81,11 +81,14 @@ server{
 
 	
 	location / {
-
 		include proxy_params;
 		proxy_pass http://unix:/home/ubuntu/dashboard/application/core/dashboard.sock;
-
 	}
+    location /static {
+        autoindex on;
+		alias /home/ubuntu/dashboard/application/frontend/static;
+	}
+    
 }
 EOF
 
@@ -100,3 +103,5 @@ echo "Django application hosted with Nginx is now live."
 
 
 #pylint --load-plugins pylint_django --django-settings-module=example.settings **/*.py
+
+ 
