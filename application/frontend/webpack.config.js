@@ -6,6 +6,7 @@ module.exports = {
     devtool: "eval-source-map",
     module: {
         rules: [
+            
           {
              test: /\.(js|jsx)$/,
              exclude: /node_modules/,
@@ -13,8 +14,16 @@ module.exports = {
           },
           {
              test: /\.(css)$/,
-             use: ['style-loader','css-loader','sass-loader']
+             use: ['style-loader','css-loader']
+          },
+          { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
+          { test: /\.txt|pdf$/, use: 'raw-loader' },
+          // custom loader added by me and installed using npm i file-loader
+          {
+                  test: /\.(gif|svg|jpg|png)$/,  // add whatever files you wanna use within this regEx
+                  use: ["file-loader"]
           }
+
         ]
     },
     resolve: {
