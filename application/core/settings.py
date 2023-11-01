@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-x_^q9spkcet$#u@4*z0kjjpn-(^!ku!gq(-!=7h&#h4!hkl5$g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -119,12 +119,9 @@ USE_TZ = True
 
 STATIC_URL = 'frontend/static/'
 
-if DEBUG:
-    STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/static')
-                        ]
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'frontend/static')
+STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'frontend/static')]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'frontend/staticfiles')
 
 
 #application\frontend\static
@@ -134,3 +131,6 @@ else:
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+print("Templates dir:",os.path.join(BASE_DIR, 'frontend/templates'))
